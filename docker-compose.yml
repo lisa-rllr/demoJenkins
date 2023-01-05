@@ -1,0 +1,58 @@
+# Docker Compose 
+version: '3.3'
+
+# Define services
+services:
+  # spring service
+  spring:
+    image: ams_app
+    ports:
+      - "8084:8084" 
+    container_name: spring_cont
+    depends_on:
+      - database
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/amsdbfeb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: dhia
+      SPRING_DATASOURCE_PASSWORD: dhiasaria123
+    networks:
+      - spr_net
+
+  # Database Service (Mysql)
+  database:
+    image: mysql:latest
+    container_name: mysql_cont
+    volumes:
+      - db_ams:/var/lib/mysql 
+    restart: always
+    environment:
+      MYSQL_DATABASE: amsdbfeb
+      MYSQL_USER: dhia
+      MYSQL_PASSWORD: dhiasaria123
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - spr_net
+
+  # phpmyadmin Service 
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: pmadmin_cont
+    depends_on:
+      - database
+    restart: always
+    ports:
+      - 8086:80
+    environment:
+      - PMA_ARBITRARY=1
+    networks:
+      - spr_net
+
+# Dec
+volumes:
+  db_ams:
+
+networks:
+  spr_net:
+
+
