@@ -4,11 +4,11 @@ pipeline {
    
     stages {
 
-        stage('get code from github') {
+        stage('get code from bitbucket') {
             steps {
                 echo 'Pulling...';
                 git branch: 'master',
-                url : 'https://github.com/lisa-rllr/demoJenkins.git';
+                url : 'https://lisa-rllr@bitbucket.org/lisa-rllr/linktojenkins.git';
             }
 
             post {
